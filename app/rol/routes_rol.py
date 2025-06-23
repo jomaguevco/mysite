@@ -215,5 +215,6 @@ def buscar_rol():
         # Si encontramos resultados, los mostramos
         return render_template('panel/rol.html', roles=roles)
 
-    # Si es GET, mostramos el formulario de búsqueda
+    # Si es GET, mostrar todos los roles disponibles
+    roles = control_usuario.get_all_users_rol()
     return render_template('panel/rol.html', roles=roles)
