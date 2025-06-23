@@ -1,10 +1,11 @@
 import pymysql
 
 def obtener_conexion():
-    return pymysql.connect(host='memoriescity.mysql.pythonanywhere-services.com',
-                           user='memoriescity',
-                           password='jalados2025',
-                           db='memoriescity$VINILVIBES')
+    return pymysql.connect(host='localhost',
+                           user='root',
+                           password='',
+                           db='memoriescity$vinilvibes')
 
-# Alias for obtener_conexion
+# Aliases for obtener_conexion
+get_db_connection_seguridad = obtener_conexion
 get_db_connection = obtener_conexion
