@@ -1,0 +1,10 @@
+flask
+flask-wtf
+flask-login
+flask-jwt-extended
+flask-socketio
+pymysql
+werkzeug
+requests
+email-validator
+# For development purposes

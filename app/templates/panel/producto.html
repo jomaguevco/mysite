@@ -1,0 +1,186 @@
+{% extends 'basePanel.html' %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Gestión de Detalle de Productos</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div>
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category == 'error' and 'danger' or 'success' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+<div class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="p-4 flex justify-between items-center">
+        <!-- Formulario de búsqueda -->
+        <form action="{{ url_for('producto.panel_producto_home') }}" method="get" class="flex-grow mr-4">
+            <div class="flex">
+                <div class="relative flex-grow">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </span>
+                    <input type="text" name="nombre_producto"
+                        class="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                        placeholder="Buscar producto por nombre" value="{{ request.args.get('nombre_producto', '') }}">
+                </div>
+                <button type="submit"
+                    class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Buscar
+                </button>
+
+                <a href="{{ url_for('producto.asignar_detalle_producto') }}"
+                    class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                    <i class="fas fa-plus mr-2"></i>Asignar detalle
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Filtros -->
+    <div class="p-4 flex justify-between items-center mb-4">
+        <!-- Formulario de filtro -->
+        <form action="{{ url_for('producto.panel_producto_home') }}" method="get">
+            <div class="flex items-center">
+                <label for="filtro_genero" class="mr-2">Filtrar por Género:</label>
+                <select id="filtro_genero" name="filtro_genero" class="py-2 px-4 border rounded-lg focus:outline-none">
+                    <option value="todos" {% if request.args.get('filtro_genero') == 'todos' %} selected {% endif %}>Todos</option>
+                    {% for genero in generos %}
+                        <option value="{{ genero[0] }}" {% if genero[0] == request.args.get('filtro_genero') %} selected {% endif %}>
+                            {{ genero[1] }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <!-- Botón para aplicar el filtro -->
+                <button type="submit" class="ml-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                    Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+        <!-- Tabla de productos -->
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID
+                            Producto</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tipo
+                            de Producto</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Género</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Precio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Stock
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Imagen</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for producto in productos %}
+                    <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[0] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[8] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[1] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[10] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                {% if producto[4] == 'A' %}
+                                    bg-green-100 text-green-800
+                                {% else %}
+                                    bg-red-100 text-red-800
+                                {% endif %}
+                            ">
+                                {{ 'Activo' if producto[4] == 'A' else 'Inactivo' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">{{ producto[5] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">{{ producto[6] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <img src="{{ url_for('static', filename = 'media/' ~ producto[7]) }}"
+                                alt="Imagen del producto" class="w-16 h-16 object-cover rounded">
+                        </td>
+
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <!-- Cambiado el enlace para pasar los dos parámetros: ID Producto y ID Tipo Producto -->
+                            <a href="{{ url_for('producto.editar_detalle_tipo_producto', id_producto=producto[0], id_tipo_producto=producto[9]) }}"
+                                class="text-indigo-600 hover:text-indigo-900 mr-2">Editar</a>
+                            <button class="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 ml-2"
+                                data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                onclick="setProductoToDelete('{{ producto[0] }}', '{{ producto[9] }}')">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Confirmar Eliminación de Producto -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-red-500 text-white">
+                <h5 class="modal-title" id="deleteModalLabel"><i class="fas fa-exclamation-triangle"></i> Confirmar
+                    Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage"><i class="fas fa-box"></i> ¿Estás seguro que deseas eliminar este producto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <form id="deleteForm" method="POST">
+                    <input type="hidden" name="id_producto" id="idProductoToDelete">
+                    <input type="hidden" name="id_tipo_producto" id="idTipoProductoToDelete">
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"><i
+                            class="fas fa-trash mr-2"></i>Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setProductoToDelete(idProducto, idTipoProducto) {
+        const deleteMessage = document.getElementById('deleteMessage');
+        deleteMessage.innerHTML = `<i class="fas fa-box"></i> ¿Estás seguro que deseas eliminar el producto con ID <strong>${idProducto}</strong> y tipo de producto <strong>${idTipoProducto}</strong>?`;
+
+        // Establece los valores en los campos ocultos del formulario
+        document.getElementById('idProductoToDelete').value = idProducto;
+        document.getElementById('idTipoProductoToDelete').value = idTipoProducto;
+
+        // Configura la acción del formulario con la URL correcta para eliminar
+
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `/productos_tienda/eliminar_detalle_producto/${idProducto}/${idTipoProducto}`;
+    }
+</script>
+
+{%endblock%}

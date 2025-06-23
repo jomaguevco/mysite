@@ -1,0 +1,67 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Editar Rol</h2>
+
+    <div class="row">
+        <!-- Formulario de edición -->
+        <div class="col-md-12">
+            <form action="{{url_for('rol.editar_rol', id=rol[0][0])}}" method="POST">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="id_usuario" class="form-label">ID Usuario <i class="fas fa-user"></i></label>
+                        <input type="text" class="form-control" disabled id="id_usuario"  value="rol[0]"
+                            readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="nombre_usuario" class="form-label">Nombre de Usuario <i
+                                class="fas fa-user"></i></label>
+                        <input type="text" class="form-control" disabled id="nombre_usuario" 
+                            value="rol[15]">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email <i class="fas fa-envelope"></i></label>
+                        <input type="email" class="form-control" disabled id="email"
+                             value="rol[4]">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fecha_registro" class="form-label">Fecha de Registro <i
+                                class="fas fa-calendar-alt"></i></label>
+                        <input type="date" class="form-control" disabled id="fecha_registro" value="2023-01-01">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="rol" class="form-label">Rol <i class="fas fa-user-shield"></i></label>
+                        <select name="valor_rol" id="id_rol" class="form-select">
+                            <option value="1" {% if rol[1] == 1 %}selected{% endif %}>Administrador</option>
+                            <option value="2" {% if rol[1] == 2 %}selected{% endif %}>Cliente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="estado" class="form-label">Estado <i class="fas fa-user-check"></i></label>
+                        <select disabled class="form-select" id="estado">
+                            <option value="1" selected>Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{url_for('rol.panel_rol_home')}}" class="btn btn-back"><i
+                            class="fas fa-arrow-left"></i> Volver</a>
+                    <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

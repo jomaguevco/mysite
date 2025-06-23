@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+
+{% block title %} - {{ product_type }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Bloque de Filtro -->
+    <h1 class="text-center text-gray-800 font-bold border-bottom border-dark pb-3"
+        style="font-size: 3.5rem; font-weight: 600; color: #333333; font-family: 'Poppins', sans-serif; letter-spacing: 0.5px;">
+        {{ product_type }}
+    </h1>
+
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <form method="get" class="p-4 border rounded shadow-sm bg-white"
+                style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <h4 class="mb-4 text-center" style="color: #4a4a4a; font-weight: bold; font-size: 1.5rem;">Filtros</h4>
+                <hr> <br>
+                <!-- Filtro por género -->
+                <div class="mb-4">
+                    <label for="filtroGenero" class="form-label" style="color: #4a4a4a;">Género</label>
+                    <select class="form-select border-2" id="filtroGenero" name="filtro_genero"
+                        style="border-radius: 10px; padding: 10px; background-color: #f9f9f9; border: 1px solid #d1d1d1;">
+                        <option value="">Todos</option>
+                        {% for genero in generos %}
+                        <option value="{{ genero['ID_GENERO'] }}" {% if
+                            request.args.get('filtro_genero')==genero['ID_GENERO'] %}selected{% endif %}>{{
+                            genero['NOMBRE_GENERO'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Filtro por precio máximo con slider -->
+                <div class="mb-3">
+                    <label for="filtroPrecio" class="form-label">Precio Máximo: S/<span id="precioMaximo">{{
+                            request.args.get('filtro_precio', 100) }}</span></label>
+                    <input type="range" class="form-range" id="filtroPrecio" name="filtro_precio" min="0" max="500"
+                        step="10" value="{{ request.args.get('filtro_precio', 100) }}"
+                        oninput="actualizarPrecioMaximo(this.value)">
+                </div>
+
+                <!-- Filtro por descuento -->
+                <div class="form-check mb-4">
+                    <input type="checkbox" class="form-check-input" id="filtroDescuento" name="filtro_descuento"
+                        style="width: 20px; height: 20px;" {% if request.args.get('filtro_descuento') %}checked{% endif
+                        %}>
+                    <label class="form-check-label" for="filtroDescuento"
+                        style="color: #4a4a4a; padding-left: 10px;">Solo con descuento</label>
+                </div>
+
+                <!-- Botón de aplicar filtros -->
+                <button type="submit" class="btn btn-dark w-100"
+                    style="padding: 12px; border-radius: 10px; font-weight: bold; background-color: #333333; color: white; border: none;">Aplicar
+                    Filtros</button>
+            </form>
+
+
+
+        </div>
+
+        <!-- Tarjetas de Productos -->
+        <div class="col-md-9">
+            <div class="row">
+                {% if products %}
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 d-flex flex-column">
+                            <a href="{{ url_for('productos.product_detail', product_id=product['ID_PRODUCTO']) }}"
+                                class="text-decoration-none text-dark">
+                                <img src="{{ url_for('static', filename='media/' + product['URL_IMG']) }}"
+                                    class="card-img-top" alt="{{ product['NOMBRE_PRODUCTO'] }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product['NOMBRE_PRODUCTO'] }}</h5>
+                                    <p class="card-text">{{ product['DESCRIPCION'] }}</p>
+                                    <p class="card-text"><strong>Precio:</strong> S/{{ product['PRECIO'] }}</p>
+                                    <p class="card-text"><strong>Stock:</strong> {{ product['STOCK'] }}</p>
+                                    {% if product['PORCENTAJE'] %}
+                                    <p class="card-text text-danger"><strong>Descuento:</strong> {{
+                                        product['PORCENTAJE'] }}%</p>
+                                    {% endif %}
+                                </div>
+                            </a>
+
+                            <!-- Formulario para agregar al carrito -->
+                            <div class="card-footer mt-auto">
+                                <form action="{{ url_for('carrito.add_to_cart') }}" method="POST"
+                                    class="d-flex align-items-center">
+                                    <input type="hidden" name="product_id" value="{{ product['ID_PRODUCTO'] }}">
+                                    <input type="hidden" name="tipo_producto_id"
+                                        value="{{ product['ID_TIPO_PRODUCTO'] }}">
+
+                                    <!-- Select para elegir la cantidad -->
+                                    <select name="cantidad" class="form-select me-2 quantity-select"
+                                        style="width: auto;">
+                                        {% for i in range(1, product['max_selectable'] + 1) %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <button type="submit" class="btn btn-dark flex-grow-1">Agregar al carrito</button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <!-- Mensaje si no se encuentran productos -->
+                <div class="alert alert-warning text-center" role="alert">
+                    No se encontraron productos para los filtros seleccionados.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Estilo de las tarjetas */
+    .card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        background-color: #ffffff;
+        /* Fondo blanco para las tarjetas */
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        min-height: 450px;
+        /* Altura mínima fija para las tarjetas */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* Asegura que el contenido esté bien distribuido */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Sombra inicial suave */
+    }
+
+    /* Efecto 3D cuando se pasa el mouse */
+    .card:hover {
+        transform: translateY(-10px);
+        /* Eleva la tarjeta */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        /* Aumenta la sombra para el efecto 3D */
+        border-color: #000000;
+        /* Negro para el borde */
+    }
+
+    /* Imagen del producto */
+    .card-img-top {
+        padding: 15px;
+        background-color: #f4f4f4;
+        /* Fondo gris claro para destacar las imágenes */
+        border-bottom: 1px solid #e0e0e0;
+        max-height: 200px;
+        /* Limita la altura de la imagen */
+        object-fit: cover;
+        /* Asegura que la imagen se ajuste sin deformarse */
+    }
+
+    /* Cuerpo de la tarjeta */
+    .card-body {
+        flex-grow: 1;
+        /* Hace que el cuerpo crezca para ocupar el espacio disponible */
+    }
+
+    /* Título y textos */
+    .card-title {
+        color: #4a4a4a;
+        /* Gris oscuro para el título */
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .card-text {
+        color: #333333;
+        /* Gris oscuro para los textos */
+        margin-bottom: 0.75rem;
+    }
+
+    /* Precio y descuento */
+    .card-text strong {
+        color: #4a4a4a;
+        /* Gris oscuro para precios y etiquetas importantes */
+    }
+
+    .card-text.text-danger {
+        color: #e74c3c;
+        /* Rojo para el descuento */
+    }
+
+    /* Pie de la tarjeta */
+    .card-footer {
+        background-color: #f8f8f8;
+        /* Fondo gris claro */
+        border-top: 1px solid #e0e0e0;
+    }
+
+    /* Botón agregar al carrito y aplicar filtros */
+    .btn-dark {
+        background-color: #4a4a4a;
+        /* Gris oscuro */
+        color: #ffffff;
+        border-color: #4a4a4a;
+    }
+
+    .btn-dark:hover {
+        background-color: #666666;
+        /* Un gris más claro al hacer hover */
+        color: #ffffff;
+    }
+
+    /* Select de búsqueda */
+    .form-select {
+        border: 1px solid #bdbdbd;
+        background-color: #ffffff;
+        color: #4a4a4a;
+        /* Gris oscuro para el texto del select */
+    }
+
+    .form-select:focus {
+        border-color: #4a4a4a;
+        /* Gris oscuro para el borde al estar enfocado */
+        box-shadow: none;
+    }
+
+    /* Banners */
+    #banner {
+        background-color: #000000;
+        /* Negro para el fondo del banner */
+    }
+
+    /* Alertas */
+    .alert-warning {
+        background-color: #f8d7da;
+        /* Fondo suave rojo claro */
+        color: #721c24;
+        /* Texto en rojo oscuro */
+        border-color: #f5c6cb;
+    }
+</style>
+
+<script>
+    // Actualizar el precio máximo en tiempo real
+    function actualizarPrecioMaximo(valor) {
+        document.getElementById('precioMaximo').innerText = valor;
+    }
+</script>
+{% endblock %}

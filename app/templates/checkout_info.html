@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Compra Completada{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5" style="min-height: 70vh;">
+    <div id="success-box" class="bg-white rounded-xl shadow-lg p-6 max-w-lg mx-auto text-center fade-in" style="border-radius: 20px;">
+        <!-- Título de éxito -->
+        <h1 class="text-4xl font-bold text-success mb-5">
+            <i class="fas fa-check-circle mt-3"></i> Compra Exitosa <span id="happy-face" class="happy-bounce">🥳</span>
+        </h1>
+
+        <!-- Detalles de la compra -->
+        <p class="lead text-xl">🎹 ¡Gracias por tu compra! 🎸</p>
+        <p class="text-lg mb-4">El total fue: <span class="font-weight-bold text-primary">S/{{ "%.2f"|format(total) }}</span></p>
+
+        <!-- Información de envío/ Debería mostrarse otro formato de fecha -->
+        <div class="bg-light rounded p-3 mb-4 fade-in-delay">
+            <h2 class="text-2xl font-semibold mb-3" style="color: #e55e5e">Información de Envío</h2>
+            <p class="mb-2">Tu pedido ha sido procesado y te será entregado a muy tardar el {{ fecha_entrega }}</p>
+            <p class="mb-3">
+                <span class="font-weight-bold">Número de seguimiento:</span>
+                <span class="text-info">{{ numero_seguimiento }}</span>
+            </p>
+            <p class="text-muted">Puedes usar este número para rastrear tu pedido.</p>
+        </div>
+
+        <!-- Botón de retorno -->
+        <div class="mt-5 mb-3 bounce-animation">
+            <a href="{{ url_for('home.index') }}" class="btn btn-primary mb-3">
+                <i class="fas fa-arrow-left mr-2"></i> Volver a la tienda
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %} - Blog{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-5 producto_destacados" style="color: #000000; font-weight: bold; font-size: 2.5rem;">🎵 Bienvenido al Blog de Memories City 🎶</h1>
+
+    <!-- Sección de búsqueda y filtros -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form class="d-flex shadow-sm">
+                <input class="form-control me-2" type="search" placeholder="Buscar publicaciones del blog" aria-label="Search" style="border-radius: 5px;">
+                <button class="btn btn-outline-dark" type="submit" style="border-radius: 5px;">Buscar</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select shadow-sm" aria-label="Filtrar por categoría" style="border-radius: 5px;">
+                <option selected>Todas las categorías</option>
+                <option value="1">Historia de la música</option>
+                <option value="2">Artistas destacados</option>
+                <option value="3">Reseñas de álbumes</option>
+                <option value="4">Tecnología musical</option>
+                <option value="5">Consejos Musicales</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Publicaciones del blog -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+        {% for post in [
+            {"img": "img1.png", "title": "Vinilo vs. Streaming: El eterno debate", "category": "Tecnología Musical", "date": "15 de mayo de 2023", "url": "descripBlog.html"},
+            {"img": "img2.png", "title": "Crea tu playlist perfecta", "category": "Consejos Musicales", "date": "10 de mayo de 2023", "url": "descripBlogConstruccion.html"},
+            {"img": "img3.png", "title": "Ritmos del mundo: Explorando la diversidad musical", "category": "Historia de la Música", "date": "5 de mayo de 2023", "url": "descripBlogConstruccion.html"},
+            {"img": "img4.png", "title": "Álbumes para un corazón roto: Terapia musical", "category": "Reseñas de Álbumes", "date": "30 de abril de 2023", "url": "descripBlogConstruccion.html"},
+            {"img": "img5.png", "title": "Los 5 artistas pop más reconocidos en todo el mundo", "category": "Destacados de Artistas", "date": "25 de abril de 2023", "url": "descripBlogConstruccion.html"},
+            {"img": "img6.png", "title": "Entrevista: El alma detrás del sonido", "category": "Destacados de Artistas", "date": "20 de abril de 2023", "url": "descripBlogConstruccion.html"}
+        ] %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0" style="border-radius: 10px;">
+                <img src="{{ url_for('static', filename='img/' + post.img) }}" class="card-img-top imgblog" alt="{{ post.title }}">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: #4A4A4A;">{{ post.title }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            <span class="badge bg-secondary">{{ post.category }}</span>
+                            <br>{{ post.date }}
+                        </small>
+                    </p>
+                    <a href="{{ post.url }}" class="btn btn-dark" style="background-color: #8FB2BF; border: none; border-radius: 5px;">Leer más</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        {% endfor %}
+    </div>
+
+    <!-- Sección de suscripción y etiquetas populares -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h3 style="color: #4A4A4A; font-weight: bold;">Suscríbete a nuestro boletín informativo</h3>
+            <p style="color: #666666;">¡Mantente actualizado con nuestras últimas publicaciones de blog y noticias musicales!</p>
+            <form class="d-flex flex-column">
+                <input type="email" class="form-control shadow-sm mb-3" placeholder="Ingresa tu email" required style="border-radius: 5px;">
+                <button type="submit" class="btn" style="background-color: #000000; color: #FFF; border-radius: 5px;">Suscribirse</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h3 style="color: #4A4A4A; font-weight: bold;">Etiquetas populares</h3>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Vinilo</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Streaming</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Rock clásico</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Jazz</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Pop</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Reseñas de álbumes</a>
+                <a href="#" class="btn btn-outline-secondary btn-sm shadow-sm" style="border-radius: 5px;">Entrevistas a artistas</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+    .imgblog {
+        width: 70%;
+        max-height: 70%; /* Ajusta la altura máxima de la imagen */
+        object-fit: cover; /* Evita que la imagen se distorsione */
+        object-position: center;
+        border-radius: 10px 10px 0 0;
+        margin: auto;
+        margin-top: 20px;
+    }
+    .btn-outline-secondary {
+        color: #8FB2BF;
+        border-color: #8FB2BF;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #8FB2BF;
+        color: #FFF;
+    }
+</style>
+
+
+</style>
+{% endblock %}

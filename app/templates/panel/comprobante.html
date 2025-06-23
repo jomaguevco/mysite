@@ -1,0 +1,95 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Gestión de Comprobantes</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div>
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category == 'error' and 'danger' or 'success' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% if comprobantes|length == 0 %}
+    <div class="alert alert-warning text-center" role="alert">
+        No se encontraron comprobantes.
+    </div>
+    {% else %}
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID
+                        Comprobante</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Fecha
+                        Emisión</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Tipo
+                        Comprobante</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Total
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                        Serie-Correlativo</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Cliente
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Estado
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Acciones
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for comprobante in comprobantes %}
+                <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ comprobante.ID_COMPROBANTE }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ comprobante.FECHA_EMISION }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ comprobante.TIPO_COMPROBANTE }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ comprobante.TOTAL }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ comprobante.SERIE_CORRELATIVO }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">{{ comprobante.NOMBRE_COMPLETO }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        {% if comprobante.ESTADO == 'A' %}
+                        <span class="text-green-600 font-semibold">Activo</span>
+                        {% else %}
+                        <span class="text-red-600 font-semibold">Inactivo</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-sm font-medium">
+                        <a href="{{ url_for('comprobante.detalle_comprobante', id_comprobante=comprobante.ID_COMPROBANTE) }}"
+                            class="text-blue-600 hover:text-blue-900 mr-2">
+                            Mostrar Detalles
+                        </a>
+                        {% if comprobante.ESTADO == 'A' %}
+                        <form method="POST" action="{{ url_for('comprobante.dar_baja_comprobante_ruta', id_comprobante=comprobante.ID_COMPROBANTE) }}" style="display:inline;">
+                            <button type="submit" class="text-red-600 hover:text-red-900">
+                                Dar de baja
+                            </button>
+                        </form>
+                        {% else %}
+                        <span class="text-gray-400">Inactivo</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function darDeBaja(idComprobante) {
+        if (confirm('¿Estás seguro que deseas dar de baja este comprobante?')) {
+            console.log('Dar de baja el comprobante:', idComprobante);
+        }
+    }
+</script>
+
+{% endblock %}

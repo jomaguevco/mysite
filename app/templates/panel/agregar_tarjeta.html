@@ -1,0 +1,48 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Agregar Nueva Tarjeta</h2>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <form action="{{ url_for('tarjetas.guardar_tarjeta') }}" method="POST">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="tipo_tarjeta" class="block text-sm font-medium text-gray-700">Tipo de Tarjeta</label>
+                    <select name="tipo_tarjeta" id="tipo_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md">
+                        <option value="Crédito">Crédito</option>
+                        <option value="Débito">Débito</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="estado_tarjeta" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select name="estado_tarjeta" id="estado_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md">
+                        <option value="A">Activa</option>
+                        <option value="I">Inactiva</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="numero_tarjeta" class="block text-sm font-medium text-gray-700">Número de Tarjeta</label>
+                    <input type="text" name="numero_tarjeta" id="numero_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md" placeholder="Número de la tarjeta" required>
+                </div>
+
+                <div>
+                    <label for="fecha_expiracion" class="block text-sm font-medium text-gray-700">Fecha de Expiración</label>
+                    <input type="date" name="fecha_expiracion" id="fecha_expiracion" class="mt-1 block w-full py-2 px-3 border rounded-md" required>
+                </div>
+
+                <div>
+                    <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                    <input type="text" name="cvv" id="cvv" class="mt-1 block w-full py-2 px-3 border rounded-md" placeholder="Código de seguridad (CVV)" required>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Guardar Tarjeta</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

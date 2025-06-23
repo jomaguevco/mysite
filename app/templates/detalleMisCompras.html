@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}
+- Detalle de Compra
+{% endblock %}
+
+<!-- odododododododd -->
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/estilosSeguimiento.css') }}">
+<script src="https://kit.fontawesome.com/91a38a0d66.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="container mx-auto my-5">
+    <div class="row">
+
+        <!-- Menú Lateral -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.datosPerfil')}}">Datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.update_user_route2')}}">Configurar datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.mis_compras')}}">Mis compras</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalle de Compra -->
+        <div class="col-md-9">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Detalle de la Compra</h2>
+
+                <!-- Información del Pedido -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-2 inline-block
+                        {% if orders[39] == 'E' %} bg-green-100 text-green-800
+                        {% elif orders[39] == 'T' %} bg-yellow-100 text-yellow-800
+                        {% elif orders[39] == 'P' %} bg-orange-100 text-orange-800
+                        {% else %} bg-red-100 text-red-800
+                        {% endif %}
+                        rounded px-4 py-2">
+                        {% if orders[39] == 'E' %}
+                        Entregado
+                        {% elif orders[39] == 'T' %}
+                        En Tránsito
+                        {% elif orders[39] == 'P' %}
+                        Pendiente
+                        {% else %}
+                        Cancelado
+                        {% endif %}
+                    </h3>
+
+                    <div class="flex items-center space-x-4 mt-4">
+                        <div class="ml-4">
+                            <h4 class="text-xl font-bold text-gray-800">{{orders[19]}}</h4>
+                            <p class="text-gray-600">{{orders[21]}}</p>
+                            <p class="text-gray-600">Unidades: <span>{{orders[12]}}</span></p>
+                            <p class="text-gray-600">Vendido por: Memories City</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seguimiento del Pedido -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Seguimiento del Pedido</h3>
+                    <ul class="space-y-2">
+                        <li class="flex justify-between text-gray-600">
+                            <p>Solicitud recibida</p>
+                            <span>{{orders[37]}}</span>
+                        </li>
+                        <li class="flex justify-between text-gray-600">
+                            <p>Num Seguimiento</p>
+                            <span>{{orders[40]}}</span>
+                        </li>
+                        <li class="flex justify-between text-gray-600">
+                            <p>Entregado</p>
+                            <span>
+                                {% if orders[34] is not none %}
+                                    {{ orders[34] }}
+                                {% else %}
+                                    Por entregar
+                                {% endif %}
+                            </span>
+                        </li>
+                    </ul>
+                    <p class="mt-4 text-gray-600"><strong>Punto de entrega:</strong> {{orders[36]}}</p>
+                </div>
+
+                <!-- odododododododd -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <div id="custom-title-pag">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-800">Seguimiento del Pedido</h3>
+                    </div>
+
+                    <div id="custom-dates-info">
+                        <div>
+                            <p>Num. Solicitud</p>
+                            <span><b>{{orders[40]}}</b></span>
+                        </div>
+                        <div>
+                            <p>Fecha de Envío</p>
+                            <span><b>{{orders[37]}}</b></span>
+                        </div>
+                        <div>
+                            <p>Fecha de Entrega</p>
+                            <span><b>{{orders[38]}}</b></span>
+                        </div>
+                    </div>
+
+                    <div id="custom-timeline">
+                        <div class="custom-timeline-step completed">
+                            <i class="fa-solid fa-truck-ramp-box"></i>
+                            <h3>Registrado</h3>
+                            <br>
+                            <div class="arrow-container">
+                                {% if orders[39] == 'P' %}
+                                    <i class="arrow-sign fa-solid fa-circle-up"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="custom-timeline-bar"></div>
+                        <div class="custom-timeline-step completed">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            <h3>En Tránsito</h3>
+                            <br>
+                            <div class="arrow-container">
+                                {% if orders[39] == 'T' %}
+                                    <i class="arrow-sign fa-solid fa-circle-up"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="custom-timeline-bar"></div>
+                        <div class="custom-timeline-step">
+                            <i class="fa-solid fa-parachute-box"></i>
+                            <h3>Entregado</h3>
+                            <br>
+                            <div class="arrow-container">
+                                {% if orders[39] == 'E' %}
+                                    <i class="arrow-sign fa-solid fa-circle-up"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen y Medio de Pago -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Resumen y medio de pago</h4>
+                </div>
+
+                <!-- Política de Devoluciones -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">Política de Devoluciones</h4>
+                    <p class="text-gray-600">Si no estás satisfecho con tu compra, puedes devolver el producto en un
+                        plazo de 30 días desde la fecha de entrega.</p>
+                </div>
+
+                <!-- Apoyo -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <h4 class="text-lg font-semibold mb-2 text-gray-800">¿Necesitas Apoyo?</h4>
+                    <p class="text-gray-600">Si necesitas ayuda con tu pedido, por favor contáctanos a través de nuestro
+                        servicio de atención al cliente. Estamos disponibles 24/7 para asistirte.</p>
+                </div>
+
+                <!-- Acciones -->
+                <div class="flex justify-between mt-6">
+                    <a href="#"
+                        class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">Evaluar
+                        producto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

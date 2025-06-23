@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %} - Iniciar Sesión{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/inicio_sesion.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="login-page">
+    <div class="login-container">
+        <div class="login-image">
+            <img src="{{ url_for('static', filename='img/iniciarSesion.png') }}" alt="Imagen decorativa de inicio de sesión" class="login-illustration">
+        </div>
+        <div class="login-form-container">
+            <form method="POST" action="{{ url_for('auth.login') }}" class="login-form">
+                <h1 class="login-title">Iniciar Sesión</h1>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert">
+                                {{ message }}
+                                <button type="button" class="alert-close" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-input", placeholder="Ingrese su correo electrónico") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-input", placeholder="Ingrese su contraseña") }}
+                </div>
+                {{ form.submit(class="submit-btn") }}
+                <p class="register-link">¿No tienes una cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí</a></p>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

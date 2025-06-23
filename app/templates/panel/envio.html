@@ -1,0 +1,157 @@
+{% extends 'basePanel.html' %}
+
+{% block head %}
+{{ super() }}
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Gestión de Envíos</h2>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID Envío</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID Venta</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Dirección</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Fecha Envío</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Fecha Entrega</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Numero de seguimiento</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Precio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for envio in envios %}
+                    <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.ID_ENVIO }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.ID_VENTA }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.DIRECCION_ENVIO }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.FECHA_ENVIO }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.FECHA_ENTREGA }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                {% if envio.ESTADO_ENVIO == 'E' %}
+                                    bg-green-100 text-green-800
+                                {% elif envio.ESTADO_ENVIO == 'T' %}
+                                    bg-yellow-100 text-yellow-800
+                                {% elif envio.ESTADO_ENVIO == 'P' %}
+                                    bg-blue-100 text-blue-800
+                                {% else %}
+                                    bg-red-100 text-red-800
+                                {% endif %}
+                            ">
+                                {% if envio.ESTADO_ENVIO == 'E' %}
+                                Entregado
+                                {% elif envio.ESTADO_ENVIO == 'T' %}
+                                En Tránsito
+                                {% elif envio.ESTADO_ENVIO == 'P' %}
+                                Pendiente
+                                {% else %}
+                                Cancelado
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.NUMERO_SEGUIMIENTO }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ envio.PRECIO }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-sm font-medium">
+                            <!-- Botón para abrir el modal -->
+                            <button type="button" class="text-yellow-600 hover:text-yellow-900" data-bs-toggle="modal" data-bs-target="#transitModal-{{ envio.ID_ENVIO }}">
+                                Tránsito
+                            </button>
+
+                            <span class="mx-2">|</span>
+
+                            <button type="button" class="text-green-600 hover:text-green-900" data-bs-toggle="modal" data-bs-target="#checkModal-{{ envio.ID_ENVIO }}">
+                                Entregado
+                            </button>
+
+                            <span class="mx-2">|</span>
+
+                            <button type="button" class="text-red-600 hover:text-red-900" data-bs-toggle="modal" data-bs-target="#cancelModal-{{ envio.ID_ENVIO }}">
+                                Cancelado
+                            </button>
+
+                            <!-- Apartado de Modals -->
+                            <div class="modal fade" id="transitModal-{{ envio.ID_ENVIO }}" tabindex="-1" aria-labelledby="transitModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelModalLabel">Confirmar Cambio de Estado</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro de cambiar el estado del envío ID {{ envio.ID_ENVIO }} a EN TRÁNSITO?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                                            <!-- Formulario para cancelar el envío -->
+                                            <form action="{{ url_for('admin.cambiar_transito_envio', id_envio=envio.ID_ENVIO) }}" method="POST" style="display:inline;">
+                                                {{ form.csrf_token }}
+                                                <button type="submit" class="btn btn-warning">Aceptar cambio</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="checkModal-{{ envio.ID_ENVIO }}" tabindex="-1" aria-labelledby="checkModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelModalLabel">Confirmar Cambio de Estado</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro de cambiar el estado del envío ID {{ envio.ID_ENVIO }} a ENTREGADO?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                                            <!-- Formulario para cancelar el envío -->
+                                            <form action="{{ url_for('admin.cambiar_entregado_envio', id_envio=envio.ID_ENVIO) }}" method="POST" style="display:inline;">
+                                                {{ form.csrf_token }}
+                                                <button type="submit" class="btn btn-success">Aceptar cambio</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="cancelModal-{{ envio.ID_ENVIO }}" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelModalLabel">Confirmar Cambio de Estado</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ¿Está seguro de cambiar el estado del envío ID {{ envio.ID_ENVIO }} a CANCELADO?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                                            <!-- Formulario para cancelar el envío -->
+                                            <form action="{{ url_for('admin.cancelar_envio', id_envio=envio.ID_ENVIO) }}" method="POST" style="display:inline;">
+                                                {{ form.csrf_token }}
+                                                <button type="submit" class="btn btn-danger">Aceptar cambio</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

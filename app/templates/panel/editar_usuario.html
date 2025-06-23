@@ -1,0 +1,172 @@
+{% extends 'basePanel.html' %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Editar Usuario</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="mb-6">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden p-6">
+        <form action="" method="POST" enctype="multipart/form-data">
+            <!-- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> -->
+
+            <!-- Previsualización de la imagen actual -->
+            <div class="mb-6 text-center">
+                <h3 class="text-lg font-medium text-gray-700 mb-4">Imagen actual</h3>
+                <img src="{{ url_for('static', filename='media/' ~ user[19]) }}" alt="Imagen del usuario" class="inline-block h-40 w-40 rounded-full object-cover">
+            </div>
+
+            <!-- Campo para cargar una nueva imagen -->
+            <div class="mb-6">
+                <label for="url_img" class="block text-sm font-medium text-gray-700">Cargar nueva imagen</label>
+                <input type="file" name="url_img" id="url_img" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+
+            <!-- Sección de inputs tipo select -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Campo: Rol (ID_ROL) -->
+                <div>
+                    <label for="id_rol" class="block text-sm font-medium text-gray-700">Rol</label>
+                    <select name="id_rol" id="id_rol" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="1" {% if user[1] == 1 %}selected{% endif %}>Administrador</option>
+                        <option value="2" {% if user[1] == 2 %}selected{% endif %}>Cliente</option>
+                    </select>
+                </div>
+
+                <!-- Campo: Tipo de Documento (TIPO_DOC) -->
+                <div>
+                    <label for="tipo_doc" class="block text-sm font-medium text-gray-700">Tipo de Documento</label>
+                    <select name="tipo_doc" id="tipo_doc" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="DNI" {% if user[6] == 'DNI' %}selected{% endif %}>DNI</option>
+                    </select>
+                </div>
+
+                <!-- Campo: Estado del Usuario -->
+                <div>
+                    <label for="estado_usuario" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select name="estado_usuario" id="estado_usuario" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="A" {% if user[14] == 'A' %}selected{% endif %}>Activo</option>
+                        <option value="I" {% if user[14] == 'I' %}selected{% endif %}>Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sección de inputs de texto -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <!-- Campo: Nombre de Usuario (NOMBRE_USUARIO) -->
+                <div>
+                    <label for="nombre_usuario" class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
+                    <input type="text" name="nombre_usuario" id="nombre_usuario" value="{{ user[2] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Contraseña (PASSWORD) -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <input type="password" name="password" id="password" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Deja en blanco para no cambiar">
+                </div>
+
+                <!-- Campo: Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" name="email" id="email" value="{{ user[4] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Teléfono -->
+                <div>
+                    <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                    <input type="text" name="telefono" id="telefono" value="{{ user[5] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Número de Documento (NRO_DOCUMENTO) -->
+                <div>
+                    <label for="nro_documento" class="block text-sm font-medium text-gray-700">Número de Documento</label>
+                    <input type="text" name="nro_documento" id="nro_documento" value="{{ user[7] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Dirección -->
+                <div>
+                    <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
+                    <input type="text" name="direccion" id="direccion" value="{{ user[8] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Provincia -->
+                <div>
+                    <label for="provincia" class="block text-sm font-medium text-gray-700">Provincia</label>
+                    <input type="text" name="provincia" id="provincia" value="{{ user[9] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Distrito -->
+                <div>
+                    <label for="distrito" class="block text-sm font-medium text-gray-700">Distrito</label>
+                    <input type="text" name="distrito" id="distrito" value="{{ user[10] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Código Postal -->
+                <div>
+                    <label for="codigo_postal" class="block text-sm font-medium text-gray-700">Código Postal</label>
+                    <input type="text" name="codigo_postal" id="codigo_postal" value="{{ user[11] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Apartamento -->
+                <div>
+                    <label for="apartamento" class="block text-sm font-medium text-gray-700">Apartamento</label>
+                    <input type="text" name="apartamento" id="apartamento" value="{{ user[12] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Departamento -->
+                <div>
+                    <label for="departamento" class="block text-sm font-medium text-gray-700">Departamento</label>
+                    <input type="text" name="departamento" id="departamento" value="{{ user[13] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Nombres -->
+                <div>
+                    <label for="nombres" class="block text-sm font-medium text-gray-700">Nombres</label>
+                    <input type="text" name="nombres" id="nombres" value="{{ user[15] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Apellido Paterno -->
+                <div>
+                    <label for="apellido_pat" class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+                    <input type="text" name="apellido_pat" id="apellido_pat" value="{{ user[16] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+                <!-- Campo: Apellido Materno -->
+                <div>
+                    <label for="apellido_mat" class="block text-sm font-medium text-gray-700">Apellido Materno</label>
+                    <input type="text" name="apellido_mat" id="apellido_mat" value="{{ user[17] }}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                </div>
+
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="mt-6 flex justify-between">
+                <!-- Botón de Volver -->
+                <a href="{{ url_for('admin.panel_usuarios_home') }}" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    Volver
+                </a>
+
+                <!-- Botón de Guardar Cambios -->
+                <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

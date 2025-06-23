@@ -1,0 +1,192 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Gestión de Descuentos</h2>
+
+    <!-- Mostrar mensajes flash relacionados con "descuentos" -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div>
+            {% for message in messages %}
+                {% if 'descuento' in message %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+
+    <div class="p-4 flex flex-wrap justify-between items-center">
+        <!-- Sección de Búsqueda -->
+        <form action="{{ url_for('descuento.buscar_descuento') }}" method="get" class="flex-grow mr-4 mb-4">
+            <div class="flex items-center">
+                <div class="relative flex-grow">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </span>
+                    <input type="text" name="porcentaje" class="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500" placeholder="Buscar descuento por porcentaje" required>
+                </div>
+                <button type="submit" class="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Buscar
+                </button>
+            </div>
+        </form>
+
+
+        <!-- Botón Añadir Descuento -->
+        <div class="flex justify-end mb-4">
+            <a href="{{ url_for('descuento.formulario_agregar_descuento') }}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                <i class="fas fa-plus mr-2"></i>Añadir Descuento
+            </a>
+        </div>
+
+        <!-- Sección de Filtros -->
+        <form action="{{ url_for('descuento.filtrar_descuento') }}" method="get" class="w-full flex justify-between items-center mb-4">
+            <div class="flex items-center">
+                <label for="filtro_orden" class="mr-2">Filtrar</label>
+                <div class="flex">
+                    <select name="filtro_estado_orden" id="filtro_estado_orden" class="py-2 px-4 border rounded-l-lg focus:outline-none focus:border-blue-500">
+                        <option value="todos">Todos</option>
+                        <option value="A">Activos</option>
+                        <option value="I">Inactivos</option>
+                        <option value="asc">Ascendente</option>
+                        <option value="desc">Descendente</option>
+                    </select>
+                    <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50">
+                        Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+    <!-- Si no hay resultados de búsqueda -->
+    {% if descuentos|length == 0 %}
+    <div class="alert alert-warning text-center" role="alert">
+        No se encontraron descuentos relacionados a la búsqueda.
+    </div>
+    {% else %}
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID Descuento</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Porcentaje</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Fecha Inicio</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Fecha Fin</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for descuento in descuentos %}
+                    <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ descuento[0] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">{{ descuento[1] }}%</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ descuento[2] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ descuento[3] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                {% if descuento[4] == 'A' %}
+                                    bg-green-100 text-green-800
+                                {% else %}
+                                    bg-red-100 text-red-800
+                                {% endif %}">
+                                {{ descuento[4] }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-sm font-medium">
+                            <a href="{{ url_for('descuento.editar_descuento_view', id_descuento=descuento[0]) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Editar</a>
+                            <button class="text-red-600 hover:text-red-900" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDescuentoToDelete('{{ descuento[0] }}', '{{ descuento[1] }}')">
+                                Dar de baja
+                            </button>
+                            <button class="ml-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" onclick="setDescuentoToConfirmDelete('{{ descuento[1] }}', '{{ descuento[0] }}')">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal para Confirmar Dar de Baja Descuento -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-red-500 text-white">
+                <h5 class="modal-title" id="deleteModalLabel"><i class="fas fa-exclamation-triangle"></i> Confirmar Dar de Baja</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteMessage"><i class="fas fa-tag"></i> ¿Estás seguro que deseas dar de baja este descuento?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" data-bs-dismiss="modal">Cancelar</button>
+                <form id="deleteForm" action="{{ url_for('descuento.dar_de_baja_descuento_view') }}" method="post">
+                    <input type="hidden" name="id_descuento" id="idDescuentoToDelete">
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"><i class="fas fa-trash mr-2"></i>Dar de baja</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Confirmar Eliminar Descuento -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-red-600 text-white">
+                <h5 class="modal-title" id="confirmDeleteModalLabel"><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteConfirmMessage"><i class="fas fa-trash"></i> ¿Estás seguro que deseas eliminar este descuento? Solo se eliminará si no está asociado a productos.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" data-bs-dismiss="modal">Cancelar</button>
+                <form id="deleteConfirmForm" method="post">
+                    <input type="hidden" name="id_descuento" id="idDescuentoToConfirmDelete">
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"><i class="fas fa-trash mr-2"></i>Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Función para dar de baja el descuento
+    function setDescuentoToDelete(idDescuento, porcentaje) {
+        const deleteMessage = document.getElementById('deleteMessage');
+        deleteMessage.innerHTML = `<i class="fas fa-tag"></i> ¿Estás seguro que deseas dar de baja el descuento de <strong>${porcentaje}%</strong>?`;
+        document.getElementById('idDescuentoToDelete').value = idDescuento;
+    }
+
+    // Función para confirmar eliminación de descuento
+    function setDescuentoToConfirmDelete(porcentaje, idDescuento) {
+        const deleteConfirmMessage = document.getElementById('deleteConfirmMessage');
+        deleteConfirmMessage.innerHTML = `<i class="fas fa-trash"></i> ¿Estás seguro que deseas eliminar el descuento de <strong>${porcentaje}%</strong>? Solo se eliminará si no está asociado a productos.`;
+        document.getElementById('idDescuentoToConfirmDelete').value = idDescuento;
+
+        // Actualizamos la acción del formulario dinámicamente con el id_descuento correcto
+        const deleteForm = document.getElementById('deleteConfirmForm');
+        deleteForm.action = `/descuento/eliminar/${idDescuento}`;
+    }
+</script>
+
+{% endblock %}

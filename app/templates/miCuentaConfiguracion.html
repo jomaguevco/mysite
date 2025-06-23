@@ -1,0 +1,169 @@
+{% extends 'base.html'%}
+
+{% block title %}
+- Configuración de Datos Personales
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.datosPerfil')}}">Datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('perfil.update_user_route2')}}">Configurar datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.mis_compras')}}">Mis compras</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <!-- Sección Datos Personales -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                <h2 class="text-center mb-5 text-3xl font-bold">Configurar Datos Personales</h2>
+
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <!-- Cargar nueva imagen -->
+                    <div class="mb-4 text-center">
+                        <img src="{{ url_for('static', filename='media/' ~ profile[19]) }}" alt="Foto de perfil" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                        <div class="mb-3">
+                            <label for="url_img" class="form-label">Cambiar imagen de perfil</label>
+                            <input type="file" class="form-control" id="url_img" name="url_img">
+                        </div>
+                    </div>
+
+                    <!-- Bloque flotante: Nombres y Apellidos -->
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                        <h3 class="text-lg font-bold mb-4">Nombres y Apellidos</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="nombres" class="form-label">Nombres</label>
+                                <input type="text" class="form-control" id="nombres" name="nombres" value="{{profile[15]}}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido_pat" class="form-label">Apellido Paterno</label>
+                                <input type="text" class="form-control" id="apellido_pat" name="apellido_pat" value="{{profile[16]}}" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido_mat" class="form-label">Apellido Materno</label>
+                                <input type="text" class="form-control" id="apellido_mat" name="apellido_mat" value="{{profile[17]}}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre_usuario" class="form-label">Nombre de Usuario</label>
+                                <input disabled type="text" class="form-control" id="nombre_usuario" name="nombre_usuario" value="{{profile[2]}}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloque flotante: Información de Contacto -->
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                        <h3 class="text-lg font-bold mb-4">Información de Contacto</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input disabled type="email" class="form-control" id="email" name="email" value="{{profile[4]}}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="telefono" class="form-label">Número de Celular</label>
+                                <input type="text" class="form-control" id="telefono" name="telefono" value="{{profile[5]}}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloque flotante: Documento de Identidad -->
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                        <h3 class="text-lg font-bold mb-4">Documento de Identidad</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tipo_doc" class="form-label">Tipo de Documento</label>
+                                <select class="form-select" id="tipo_doc" name="tipo_doc" required>
+                                    <option value="DNI" {% if profile[6] == 'DNI' %}selected{% endif %}>DNI</option>
+                                    <!-- Añadir más tipos de documento según sea necesario -->
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nro_documento" class="form-label">Número de Documento</label>
+                                <input disabled type="text" class="form-control" id="nro_documento" name="nro_documento" value="{{profile[7]}}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloque flotante: Dirección -->
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                        <h3 class="text-lg font-bold mb-4">Dirección</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="direccion" name="direccion" value="{{profile[8]}}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apartamento" class="form-label">Apartamento, Suite, etc.</label>
+                                <input type="text" class="form-control" id="apartamento" name="apartamento" value="{{profile[12]}}">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="departamento" class="form-label">Departamento</label>
+                                <input type="text" class="form-control" id="departamento" name="departamento" value="{{profile[13]}}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="provincia" class="form-label">Provincia</label>
+                                <input type="text" class="form-control" id="provincia" name="provincia" value="{{profile[9]}}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="distrito" class="form-label">Distrito</label>
+                                <input type="text" class="form-control" id="distrito" name="distrito" value="{{profile[10]}}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="codigo_postal" class="form-label">Código Postal</label>
+                            <input type="text" class="form-control" id="codigo_postal" name="codigo_postal" value="{{profile[11]}}" required>
+                        </div>
+                    </div>
+
+                    <!-- Bloque flotante: Estado del Usuario -->
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                        <h3 class="text-lg font-bold mb-4">Estado del Usuario</h3>
+                        <div class="mb-3">
+                            <label for="estado_usuario" class="form-label">Estado del Usuario</label>
+                            <select disabled class="form-select" id="estado_usuario" name="estado_usuario" required>
+                                <option value="A" {% if profile[14] == 'A' %}selected{% endif %}>Activo</option>
+                                <option value="I" {% if profile[14] == 'I' %}selected{% endif %}>Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Bloque flotante: Contraseña -->
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                        <h3 class="text-lg font-bold mb-4">Cambiar Contraseña</h3>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Deja en blanco para no cambiar">
+                        </div>
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

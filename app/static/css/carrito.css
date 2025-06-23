@@ -1,0 +1,242 @@
+/* Título */
+.title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+/* Contenedor principal */
+.cart-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten automáticamente */
+}
+
+@media (max-width: 768px) {
+    .cart-container {
+        flex-direction: column; /* Apila los elementos verticalmente */
+        gap: 1rem;
+    }
+}
+
+
+.cart-items {
+    flex: 2;
+    width: 100%; /* Asegura que ocupe todo el ancho en pantallas pequeñas */
+}
+
+.cart-summary {
+    flex: 1;
+    width: 100%; /* Asegura que ocupe todo el ancho en pantallas pequeñas */
+    margin-top: 1rem; /* Espaciado adicional entre elementos */
+    margin-bottom: 20px;
+}
+
+
+.cart-summary h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.cart-summary p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* Botones */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.button-form {
+    flex: 1;
+}
+
+.btn-danger, .btn-success {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-success {
+    background-color: #2a9d8f;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #1e7269;
+}
+
+/* Botones de cantidad */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+}
+
+.quantity-btn:hover {
+    background-color: #e9ecef;
+}
+
+/* Otros elementos */
+.cart-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-image {
+    width: 80px; /* Reduce el tamaño de la imagen */
+    height: 80px; /* Asegura que se mantenga cuadrada */
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .item-image {
+        width: 60px; /* Tamaño más pequeño en pantallas pequeñas */
+        height: 60px;
+    }
+
+    .item-details h3 {
+        font-size: 1rem; /* Reduce el tamaño del texto */
+    }
+
+    .item-total {
+        font-size: 0.9rem; /* Ajusta el tamaño del subtotal */
+    }
+}
+
+
+.item-details {
+    margin-left: 1rem;
+    flex: 1;
+}
+
+.item-details h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.price-info {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 0.5rem;
+}
+
+.discounted-price {
+    color: #e53935;
+    font-weight: bold;
+}
+
+.item-total {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+.remove-btn {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Carrito vacío */
+.empty-cart {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.empty-cart i {
+    font-size: 4rem;
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: #2a9d8f;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #218479;
+    color: white;
+}
+
+/* Estilo para el select de cantidad */
+.quantity-select {
+    width: 80px; /* Ocupa todo el ancho en pantallas pequeñas */
+    padding: 8px;
+    font-size: 1rem;
+    margin-top: 0.5rem; /* Añade un margen superior */
+}
+
+@media (max-width: 768px) {
+    .btn-danger, .btn-success {
+        font-size: 0.9rem; /* Reduce el tamaño de los botones */
+        padding: 10px;
+    }
+}
+
+
+.quantity-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}

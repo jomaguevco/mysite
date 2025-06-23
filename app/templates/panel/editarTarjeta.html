@@ -1,0 +1,138 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Editar Tarjeta</h2>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <form action="{{ url_for('tarjetas.actualizar_tarjeta', tarjeta_id=tarjeta[0]) }}" method="POST">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Campo: Tipo de Tarjeta -->
+                <div>
+                    <label for="tipo_tarjeta" class="block text-sm font-medium text-gray-700">Tipo de Tarjeta</label>
+                    <select name="tipo_tarjeta" id="tipo_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md">
+                        <option value="Crédito" {% if tarjeta[2] == 'Crédito' %}selected{% endif %}>Crédito</option>
+                        <option value="Débito" {% if tarjeta[2] == 'Débito' %}selected{% endif %}>Débito</option>
+                    </select>
+                </div>
+
+                <!-- Campo: Estado de la Tarjeta -->
+                <div>
+                    <label for="estado_tarjeta" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select name="estado_tarjeta" id="estado_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md">
+                        <option value="A" {% if tarjeta[7] == 'A' %}selected{% endif %}>Activa</option>
+                        <option value="I" {% if tarjeta[7] == 'I' %}selected{% endif %}>Inactiva</option>
+                    </select>
+                </div>
+
+                <!-- Campo: Número de Tarjeta -->
+                <div>
+                    <label for="numero_tarjeta" class="block text-sm font-medium text-gray-700">Número de Tarjeta</label>
+                    <input type="text" name="numero_tarjeta" id="numero_tarjeta" value="{{ tarjeta[3] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" placeholder="Número de la tarjeta" required>
+                </div>
+
+                <!-- Campo: Fecha de Expiración -->
+                <div>
+                    <label for="fecha_expiracion" class="block text-sm font-medium text-gray-700">Fecha de Expiración</label>
+                    <input type="date" name="fecha_expiracion" id="fecha_expiracion" value="{{ tarjeta[4] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" required>
+                </div>
+
+                <!-- Campo: CVV -->
+                <div>
+                    <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                    <input type="text" name="cvv" id="cvv" value="{{ tarjeta[5] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" placeholder="Código de seguridad (CVV)" required>
+                </div>
+
+                <!-- Campo: Fecha de Registro de la Tarjeta -->
+                <div>
+                    <label for="fecha_tarjeta" class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
+                    <input type="date" name="fecha_tarjeta" id="fecha_tarjeta" value="{{ tarjeta[6] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" required>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="mt-6 flex justify-between">
+                <!-- Botón de Volver -->
+                <a href="{{ url_for('admin.panel_tarjetas_home') }}" class="inline-flex justify-center py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                    Volver
+                </a>
+
+                <!-- Botón de Guardar Cambios -->
+                <button type="submit" class="inline-flex justify-center py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Editar Tarjeta</h2>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <form action="{{ url_for('tarjetas.actualizar_tarjeta', tarjeta_id=tarjeta[0]) }}" method="POST">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Campo: Tipo de Tarjeta -->
+                <div>
+                    <label for="tipo_tarjeta" class="block text-sm font-medium text-gray-700">Tipo de Tarjeta</label>
+                    <select name="tipo_tarjeta" id="tipo_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md">
+                        <option value="Crédito" {% if tarjeta[2] == 'Crédito' %}selected{% endif %}>Crédito</option>
+                        <option value="Débito" {% if tarjeta[2] == 'Débito' %}selected{% endif %}>Débito</option>
+                    </select>
+                </div>
+
+                <!-- Campo: Estado de la Tarjeta -->
+                <div>
+                    <label for="estado_tarjeta" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select name="estado_tarjeta" id="estado_tarjeta" class="mt-1 block w-full py-2 px-3 border rounded-md">
+                        <option value="A" {% if tarjeta[7] == 'A' %}selected{% endif %}>Activa</option>
+                        <option value="I" {% if tarjeta[7] == 'I' %}selected{% endif %}>Inactiva</option>
+                    </select>
+                </div>
+
+                <!-- Campo: Número de Tarjeta -->
+                <div>
+                    <label for="numero_tarjeta" class="block text-sm font-medium text-gray-700">Número de Tarjeta</label>
+                    <input type="text" name="numero_tarjeta" id="numero_tarjeta" value="{{ tarjeta[3] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" placeholder="Número de la tarjeta" required>
+                </div>
+
+                <!-- Campo: Fecha de Expiración -->
+                <div>
+                    <label for="fecha_expiracion" class="block text-sm font-medium text-gray-700">Fecha de Expiración</label>
+                    <input type="date" name="fecha_expiracion" id="fecha_expiracion" value="{{ tarjeta[4] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" required>
+                </div>
+
+                <!-- Campo: CVV -->
+                <div>
+                    <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                    <input type="text" name="cvv" id="cvv" value="{{ tarjeta[5] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" placeholder="Código de seguridad (CVV)" required>
+                </div>
+
+                <!-- Campo: Fecha de Registro de la Tarjeta -->
+                <div>
+                    <label for="fecha_tarjeta" class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
+                    <input type="date" name="fecha_tarjeta" id="fecha_tarjeta" value="{{ tarjeta[6] }}" class="mt-1 block w-full py-2 px-3 border rounded-md" required>
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="mt-6 flex justify-between">
+                <!-- Botón de Volver -->
+                <a href="{{ url_for('admin.panel_tarjetas_home') }}" class="inline-flex justify-center py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                    Volver
+                </a>
+
+                <!-- Botón de Guardar Cambios -->
+                <button type="submit" class="inline-flex justify-center py-2 px-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

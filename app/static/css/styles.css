@@ -1,0 +1,288 @@
+/* ********** PAGINA BASE ********** */
+:root {
+  --primary-color: #2a9d8f;
+  /* Color original */
+  --primary-color-dark: #2a9d8f;
+  /* Un color más oscuro */
+  --secondary-color: #4ecdc4;
+  --text-color: #333;
+  --background-color: #f8f9fa;
+  --footer-color: #343a40;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: var(--primary-color) !important;
+}
+
+.navbar-brand img {
+  max-height: 50px;
+  margin-right: 10px;
+}
+
+.nav-link {
+  color: var(--text-color) !important;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/placeholder.svg?height=400&width=1200') no-repeat center center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+  padding: 100px 0;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Main Content */
+.card {
+  margin-bottom: 20px;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: var(--primary-color);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  /* Asegúrate de que el texto sea visible */
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-color-dark);
+  /* Aplica el color más oscuro en hover */
+  border-color: var(--primary-color-dark);
+}
+
+/* Footer Styles */
+.footer {
+  background-color: var(--footer-color);
+  color: white;
+  padding: 40px 0;
+}
+
+.footer h5 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: var(--secondary-color);
+}
+
+.footer hr {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .card {
+    margin-bottom: 30px;
+  }
+}
+
+/* Animation for page load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: darken(var(--primary-color), 10%);
+}
+
+
+
+/* Personal Data Page Styles */
+.card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+.card-title {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.nav-link {
+  color: var(--text-color);
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-color);
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.form-control:disabled {
+  background-color: #f8f9fa;
+  opacity: 1;
+}
+
+.img-fluid.rounded-circle {
+  border: 3px solid var(--primary-color);
+  padding: 3px;
+}
+
+@media (max-width: 768px) {
+  .card {
+      margin-bottom: 1rem;
+  }
+}
+
+/* ACERCA DE*/
+.nav-link.active {
+  color: var(--primary-color) !important;
+  font-weight: bold;
+}
+
+.about-hero {
+  height: 50vh;
+  min-height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+
+/*FOOTER*/
+
+footer {
+  margin-top: auto;
+}
+
+
+/* INDEX */
+
+/* Estilos para el carrusel */
+.hero-section {
+  padding: 0 0;
+}
+
+.carousel-inner {
+  max-height: 400px; /* Ajusta esta altura según tus necesidades */
+}
+
+.carousel-image-container {
+  height: 400px; /* Debe ser igual a la altura máxima del carousel-inner */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-image-container img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .carousel-inner {
+      max-height: 300px; /* Altura reducida para dispositivos móviles */
+  }
+
+  .carousel-image-container {
+      height: 300px;
+  }
+}
+
+
+/* INDEX HTML */
+.producto_destacados {
+  font-size: 5vh;
+}
+
+.producto_destacados2 {
+  font-size: 3vh;
+}
+
+/*CARRUSEL*/
+.carousel-item img {
+  width: 100%;
+  height: 500px; /* Define una altura fija para las imágenes del carrusel */
+  object-fit: cover; /* Corta las imágenes para que encajen en el espacio definido */
+}
+
+

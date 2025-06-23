@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %} - Sobre Nosotros{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Sección Hero -->
+    <section class="about-hero position-relative">
+        <img src="{{ url_for('static', filename='img/sobreNosotros.png') }}" alt="Sobre Nosotros - Memories City" class="img-fluid w-100 hero-image">
+        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center overlay-dark">
+            <h1 class="text-white display-4 fw-bold fade-in">Conoce Memories City</h1>
+        </div>
+    </section>
+
+    <!-- Sección de Introducción -->
+    <section class="container my-5 text-center">
+        <h2 class="fw-bold text-primary" style="color: #2a9d8f;">Nuestra Pasión es la Música</h2>
+        <p class="text-muted mt-3 lead fade-in" style="font-size: 1.2rem;">
+            En Memories City, nos dedicamos a brindar a cada visitante una experiencia musical única. Desde vinilos y cassettes hasta CDs, somos un santuario para los amantes de la música.
+        </p>
+    </section>
+
+    <!-- Sección Historia -->
+    <section id="historia" class="container my-5 fade-in-left">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img src="{{ url_for('static', filename='img/historia.jpg') }}" alt="Nuestra Historia" class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="col-md-6">
+                <h3 class="fw-bold" style="color: #2a9d8f;">Nuestra Historia</h3>
+                <p style="color: #4a4a4a;">
+                    Comenzamos como una pequeña tienda local y, con el tiempo, nos hemos convertido en un lugar de encuentro para los amantes de la música. Cada producto que ofrecemos está cuidadosamente seleccionado para que vivas una experiencia memorable.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Misión y Visión -->
+    <section id="mision-vision" class="container my-5">
+        <div class="row text-center">
+            <div class="col-md-6 fade-in-up">
+                <div class="card shadow-sm border-0 card-dynamic">
+                    <div class="card-body">
+                        <h3 class="fw-bold" style="color: #2a9d8f;">Nuestra Misión</h3>
+                        <p style="color: #4a4a4a;">
+                            Inspirar y unir a los amantes de la música a través de una experiencia de compra personalizada y de calidad, donde cada artículo cuenta una historia única.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in-up">
+                <div class="card shadow-sm border-0 card-dynamic">
+                    <div class="card-body">
+                        <h3 class="fw-bold" style="color: #2a9d8f;">Nuestra Visión</h3>
+                        <p style="color: #4a4a4a;">
+                            Convertirnos en el destino principal para coleccionistas y entusiastas, ofreciendo una colección curada de música y un espacio de encuentro para la comunidad.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Galería de la Tienda -->
+    <section id="galeria" class="container my-5">
+        <h3 class="text-center fw-bold" style="color: #2a9d8f;">Nuestro Espacio</h3>
+        <div class="row g-4 mt-4 fade-in">
+            <div class="col-md-4">
+                <div class="gallery-item">
+                    <img src="{{ url_for('static', filename='img/store1.jpg') }}" alt="Galería de la Tienda" class="img-fluid rounded shadow-sm">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="gallery-item">
+                    <img src="{{ url_for('static', filename='img/store2.jpg') }}" alt="Galería de la Tienda" class="img-fluid rounded shadow-sm">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="gallery-item">
+                    <img src="{{ url_for('static', filename='img/store3.jpg') }}" alt="Galería de la Tienda" class="img-fluid rounded shadow-sm">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Testimonios -->
+    <section id="testimonios" class="container my-5">
+        <h3 class="text-center fw-bold" style="color: #2a9d8f;">Lo Que Dicen Nuestros Clientes</h3>
+        <div class="row g-4 mt-4 fade-in-up">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 testimonial-card">
+                    <div class="card-body">
+                        <p style="color: #4a4a4a;">
+                            "Memories City es mi lugar favorito para encontrar discos raros. El ambiente es acogedor y siempre encuentro algo especial para mi colección."
+                        </p>
+                        <footer class="blockquote-footer">Carlos R., Coleccionista de Música</footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 testimonial-card">
+                    <div class="card-body">
+                        <p style="color: #4a4a4a;">
+                            "La experiencia de compra en Memories City es única. El equipo es muy amable y siempre tienen recomendaciones increíbles."
+                        </p>
+                        <footer class="blockquote-footer">Lucía G., Amante de la Música</footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Animación de scroll
+    document.addEventListener('scroll', function () {
+        const fadeIns = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-up');
+        fadeIns.forEach((element) => {
+            const elementTop = element.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            if (elementTop < windowHeight * 0.85) {
+                element.classList.add('visible');
+            }
+        });
+    });
+</script>
+<style>
+    /* Animaciones */
+    .fade-in, .fade-in-left, .fade-in-up {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in-left {
+        transform: translateX(-20px);
+    }
+    .fade-in-up {
+        transform: translateY(40px);
+    }
+    .visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* Efectos dinámicos */
+    .card-dynamic:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+    .gallery-item:hover img {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+    }
+    .hero-image {
+        max-height: 500px;
+        object-fit: cover;
+    }
+    .overlay-dark {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .testimonial-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .testimonial-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{% endblock %}

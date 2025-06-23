@@ -1,0 +1,85 @@
+{% extends 'basePanel.html' %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Editar datos de producto</h2>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <form action="{{ url_for('producto.editar_producto', id_producto=producto[0]) }}" method="post"
+            enctype="multipart/form-data" class="p-6 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="nombre_producto" class="block text-sm font-medium text-gray-700">Producto</label>
+                    <input type="text"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        id="nombre_producto" name="nombre_producto" value="{{ producto[1] }}" required>
+                </div>
+                <div>
+                    <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+                    <input type="text"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        id="descripcion" name="descripcion" value="{{ producto[3] }}" required>
+                </div>
+                <div>
+                    <label for="anio_lanzamiento" class="block text-sm font-medium text-gray-700">Año de
+                        lanzamiento</label>
+                    <input type="text"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        id="anio_lanzamiento" name="anio_lanzamiento" value="{{ producto[2] }}" required>
+                </div>
+                <div>
+                    <label for="id_descuento" class="block text-sm font-medium text-gray-700">Descuento</label>
+                    <select
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        id="id_descuento" name="id_descuento">
+                        {% for descuento in descuentos %}
+                        <option value="{{ descuento[0] }}" {% if producto[5] == descuento[0] %}selected{% endif %}>
+                            {{ descuento[1] }}%
+                        </option>                        
+                        
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div>
+                    <label for="id_genero" class="block text-sm font-medium text-gray-700">Genero</label>
+                    <select
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        id="id_genero" name="id_genero">
+                        {% for genero in generos %}
+                        <option value="{{ genero[0] }}" {% if producto[6] == genero[0] %}selected{% endif %}>
+                            {{ genero[1] }}
+                        </option>
+                        
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div>
+                    <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                        id="estado" name="estado" required>
+                        <option value="A" {% if producto[4]=='A' %}selected{% endif %}>Activo</option>
+                        <option value="I" {% if producto[4]=='I' %}selected{% endif %}>Inactivo</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <a href="{{ url_for('producto.panel_nuestros_productos_home') }}"
+                    class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">Cancelar</a>
+                <button type="submit"
+                    class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">Actualizar
+                    Producto</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

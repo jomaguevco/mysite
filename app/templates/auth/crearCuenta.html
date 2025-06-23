@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %} - Registrarse{% endblock %}
+
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/registrar.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<main class="register-page">
+    <div class="register-container">
+        <div class="register-image">
+            <img src="{{ url_for('static', filename='img/crearCuenta.png') }}" alt="Imagen decorativa de crear cuenta" class="register-illustration">
+        </div>
+        <div class="register-form-container">
+            <form method="POST" action="{{ url_for('auth.register') }}" class="register-form">
+                <h1 class="register-title">Crear cuenta</h1>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert">
+                                {{ message }}
+                                <button type="button" class="alert-close" aria-label="Cerrar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {{ form.csrf_token }}
+                <p class="form-instruction">Por favor, introduzca información en los siguientes campos:</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.nombres(class="form-input", placeholder="Nombre") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.apellido_pat(class="form-input", placeholder="Apellido Paterno") }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.apellido_mat(class="form-input", placeholder="Apellido Materno") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email(class="form-input", placeholder="Correo electrónico") }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.telefono(class="form-input", placeholder="Teléfono") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.direccion(class="form-input", placeholder="Dirección") }}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.nombre_usuario(class="form-input", placeholder="Username") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password(class="form-input", placeholder="Contraseña") }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    {{ form.confirm_password(class="form-input", placeholder="Confirmar Contraseña") }}
+                </div>
+                
+                {{ form.submit(class="submit-btn") }}
+                
+                <p class="login-link">¿Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión aquí</a></p>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

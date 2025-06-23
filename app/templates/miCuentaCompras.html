@@ -1,0 +1,84 @@
+{% extends 'base.html'%}
+
+{% block title %}
+- Mis Compras
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.datosPerfil')}}">Datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.update_user_route2')}}">Configurar datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('perfil.mis_compras')}}">Mis compras</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <!-- Sección de Mis Compras -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                <h2 class="text-center mb-5 text-3xl font-bold">Mis Compras</h2>
+
+                <div class="search-filter mb-4 d-flex align-items-center">
+                    <!-- Barra de búsqueda con botón -->
+                    <div class="input-group me-3">
+                        <input type="text" class="form-control" placeholder="Buscar compras" aria-label="Buscar compras">
+                        <button class="btn btn-outline-primary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <!-- Filtro por fecha sin botón -->
+                    <div class="input-group">
+                        <select class="form-select" aria-label="Filtrar por fecha">
+                            <option value="last-6-months">Últimos 6 meses</option>
+                            <option value="last-year">Último año</option>
+                            <option value="all-time">Todo el tiempo</option>
+                        </select>
+                        <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                    </div>
+                </div>
+
+                <div class="productosCompras">
+                    {% for compra in orders %}
+                    <div class="card mb-4">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="{{url_for('static', filename='media/' + compra[29])}}" class="img-fluid rounded-start" alt="Imagen de producto">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{compra[19]}}</h5>
+                                    {% if compra[14] == 'A' %}
+                                    <p class="card-text">Estado: <span class="badge bg-warning text-dark">Por entregar</span></p>
+                                    {% else %}
+                                    <p class="card-text">Estado: <span class="badge bg-success">Entregado</span></p>
+                                    {% endif %}
+                                    <p class="card-text">Fecha de entrega: <span>{{ compra[3].strftime('%Y-%m-%d') }}</span></p>
+                                    <!-- Ajuste en el enlace para pasar venta_id y producto_id -->
+                                    <!-- <a href="{{ url_for('perfil.detalle_compra', venta_id=compra[0], producto_id=compra[10]) }}" class="btn btn-primary">Revisar detalle</a> -->
+                                    <a href="{{ url_for('perfil.detalle_compra', venta_id=compra[0], producto_id=compra[11]) }}" class="btn btn-primary">Revisar detalle</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

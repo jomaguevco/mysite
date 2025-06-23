@@ -1,0 +1,80 @@
+{% extends 'base.html'%}
+
+{% block title %}
+- Detalle de Comprobante
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto my-5">
+    <div class="row">
+
+        <!-- Menú Lateral -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.datosPerfil')}}">Datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.update_user_route2')}}">Configurar datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('perfil.mis_compras')}}">Mis compras</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección del Detalle del Comprobante -->
+        <div class="col-md-9">
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Detalle del Comprobante</h2>
+
+                <!-- Información del Comprobante -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>ID Comprobante:</strong> {{ comprobante[0] }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Fecha de Emisión:</strong> {{ comprobante[1].strftime("%d de %B de %Y") }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Tipo de Comprobante:</strong> {{ comprobante[2] }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Serie:</strong> {{ comprobante[4] }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Correlativo:</strong> {{ comprobante[5] }}</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Total:</strong> S/ {{ comprobante[3] }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>ID Venta:</strong> {{ comprobante[6] }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Fecha de Venta:</strong> {{ comprobante[7].strftime("%d de %B de %Y") }}</h5>
+                            <h5 class="text-lg font-semibold text-gray-800"><strong>Usuario:</strong> {{ comprobante[8] }}</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles de la Venta -->
+                <div class="bg-gray-50 rounded-lg shadow-md p-6 mb-6">
+                    <h5 class="text-center mb-4 text-xl font-semibold text-gray-800">Detalles de la Venta</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-lg font-semibold text-gray-800"><strong>Cantidad:</strong> {{ comprobante[9] }}</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-lg font-semibold text-gray-800"><strong>Precio:</strong> S/ {{ comprobante[10] }}</h6>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-lg font-semibold text-gray-800"><strong>Subtotal:</strong> S/ {{ comprobante[11] }}</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="text-center mt-6">
+                    <a href="{{ url_for('perfil.mis_compras') }}" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">Volver a Mis Compras</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

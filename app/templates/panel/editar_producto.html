@@ -1,0 +1,56 @@
+{% extends 'basePanel.html' %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Editar Detalle de Tipo de Producto</h2>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <form action="{{ url_for('producto.editar_detalle_tipo_producto', id_producto=detalle_producto[0], id_tipo_producto=detalle_producto[1]) }}" method="post" enctype="multipart/form-data" class="p-6 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="id_producto" class="block text-sm font-medium text-gray-700">Producto</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="id_producto" name="id_producto" disabled>
+                        <option value="{{ detalle_producto[0] }}">{{ detalle_producto[3] }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="id_tipo_producto" class="block text-sm font-medium text-gray-700">Tipo de Producto</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="id_tipo_producto" name="id_tipo_producto" disabled>
+                        <option value="{{ detalle_producto[1] }}">{{ detalle_producto[4] }}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
+                    <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="stock" name="stock" value="{{ detalle_producto[5] }}" required>
+                </div>
+                <div>
+                    <label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
+                    <input type="number" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="precio" name="precio" value="{{ detalle_producto[6] }}" required>
+                </div>
+                <div>
+                    <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="estado" name="estado" required>
+                        <option value="A" {% if detalle_producto[7] == 'A' %}selected{% endif %}>Activo</option>
+                        <option value="I" {% if detalle_producto[7] == 'I' %}selected{% endif %}>Inactivo</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="imagen" class="block text-sm font-medium text-gray-700">Subir Nueva Imagen</label>
+                    <input type="file" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" id="imagen" name="imagen" accept="image/*">
+                    <input type="hidden" name="imagen_actual" value="{{ detalle_producto[2] }}"> <!-- En caso no se suba una nueva imagen -->
+                    <img src="{{ url_for('static', filename='media/' + detalle_producto[2]) }}" alt="Imagen Actual" class="mt-2 h-24">
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                <a href="{{ url_for('producto.panel_producto_home') }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">Cancelar</a>
+                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">Actualizar Detalle de Producto</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

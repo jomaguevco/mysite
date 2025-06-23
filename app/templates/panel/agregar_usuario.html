@@ -1,0 +1,134 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Agregar Nuevo Usuario</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form action="" method="post" enctype="multipart/form-data" class="mt-4">
+        <!-- Fila 1: Nombres y Apellidos -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="NOMBRES" class="form-label">Nombres</label>
+                <input type="text" class="form-control" id="NOMBRES" name="NOMBRES" placeholder="Ingrese los nombres" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="APELLIDO_PAT" class="form-label">Apellido Paterno</label>
+                <input type="text" class="form-control" id="APELLIDO_PAT" name="APELLIDO_PAT" placeholder="Ingrese el apellido paterno" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="APELLIDO_MAT" class="form-label">Apellido Materno</label>
+                <input type="text" class="form-control" id="APELLIDO_MAT" name="APELLIDO_MAT" placeholder="Ingrese el apellido materno" required>
+            </div>
+        </div>
+
+        <!-- Fila 2: Nombre de Usuario y Contraseña -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="NOMBRE_USUARIO" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="NOMBRE_USUARIO" name="NOMBRE_USUARIO" placeholder="Ingrese el nombre de usuario" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="PASSWORD" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="PASSWORD" name="PASSWORD" placeholder="Ingrese la contraseña" required>
+            </div>
+        </div>
+
+        <!-- Fila 3: Tipo de Documento y Número de Documento (DNI) -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="TIPO_DOC" class="form-label">Tipo de Documento</label>
+                <select class="form-select" id="TIPO_DOC" name="TIPO_DOC" required>
+                    <option value="DNI" selected>DNI</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="NRO_DOCUMENTO" class="form-label">Número de Documento</label>
+                <input type="text" class="form-control" id="NRO_DOCUMENTO" name="NRO_DOCUMENTO" placeholder="Ingrese el número de documento" required pattern="^\d{8}$" title="El número de documento debe contener exactamente 8 dígitos">
+            </div>
+        </div>
+
+        <!-- Fila 4: Correo Electrónico, Teléfono y Dirección -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="EMAIL" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="EMAIL" name="EMAIL" placeholder="Ingrese el correo electrónico" required>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="TELEFONO" class="form-label">Teléfono</label>
+                <input type="text" class="form-control" id="TELEFONO" name="TELEFONO" placeholder="Ingrese el teléfono" required pattern="^\d+$" title="El teléfono solo puede contener números">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="DIRECCION" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="DIRECCION" name="DIRECCION" placeholder="Ingrese la dirección" required>
+            </div>
+        </div>
+
+        <!-- Fila 5: Provincia, Distrito, Código Postal y Departamento -->
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="PROVINCIA" class="form-label">Provincia</label>
+                <input type="text" class="form-control" id="PROVINCIA" name="PROVINCIA" placeholder="Ingrese la provincia" required>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="DISTRITO" class="form-label">Distrito</label>
+                <input type="text" class="form-control" id="DISTRITO" name="DISTRITO" placeholder="Ingrese el distrito" required>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="CODIGO_POSTAL" class="form-label">Código Postal</label>
+                <input type="text" class="form-control" id="CODIGO_POSTAL" name="CODIGO_POSTAL" placeholder="Ingrese el código postal" required>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="DEPARTAMENTO" class="form-label">Departamento</label>
+                <input type="text" class="form-control" id="DEPARTAMENTO" name="DEPARTAMENTO" placeholder="Ingrese el departamento" required>
+            </div>
+        </div>
+
+        <!-- Fila 6: Apartamento, Rol y Estado del Usuario -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="APARTAMENTO" class="form-label">Apartamento</label>
+                <input type="text" class="form-control" id="APARTAMENTO" name="APARTAMENTO" placeholder="Ingrese el apartamento">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="ID_ROL" class="form-label">Rol</label>
+                <select class="form-select" id="ID_ROL" name="ID_ROL" required>
+                    <option value="1">Administrador</option>
+                    <option value="2">Cliente</option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="ESTADO_USUARIO" class="form-label">Estado del Usuario</label>
+                <select class="form-select" id="ESTADO_USUARIO" name="ESTADO_USUARIO" required>
+                    <option value="A" selected>Activo</option>
+                    <option value="I">Inactivo</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Fila 7: Imagen de Perfil -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="URL_IMG" class="form-label">Cargar Imagen de Perfil</label>
+                <input type="file" class="form-control" id="URL_IMG" name="URL_IMG" accept="image/*" required>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ url_for('admin.panel_usuarios_home') }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

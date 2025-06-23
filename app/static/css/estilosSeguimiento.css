@@ -1,0 +1,135 @@
+#custom-title-pag h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Modificar ancho del contenedor de fechas */
+#custom-dates-info {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin: 0 auto 30px auto;
+    max-width: 500px;
+}
+
+#custom-dates-info div {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#custom-dates-info h3 {
+    font-weight: 600;
+    color: #555;
+}
+
+#custom-dates-info span {
+    display: block;
+    font-size: 1.2rem;
+    margin-top: 5px;
+    color: #555;
+}
+
+@media (min-width: 600px) {
+    #custom-dates-info {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    #custom-dates-info div:first-child {
+        flex-basis: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+/* Timeline Styles */
+#custom-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin-top: 30px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.custom-timeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.custom-timeline-step i {
+    font-size: 2.5rem;
+    color: rgb(42 157 143 / var(--tw-bg-opacity));
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.custom-timeline-step h3 {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.custom-timeline-bar {
+    width: 100px;
+    height: 3px;
+    background-color: #555;
+    position: relative;
+    z-index: 0;
+}
+
+/* .custom-timeline-step:hover i {
+    transform: scale(1.2);
+} */
+
+.arrow-sign:hover{
+    transform: scale(1.2);
+}
+
+.arrow-container {
+    min-height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arrow-sign {
+    display: block;
+}
+
+.arrow-sign[style="display:none"] {
+    height: 0;
+}
+
+
+@media (max-width: 600px) {
+    #custom-timeline {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .custom-timeline-step {
+        flex-direction: row;
+        align-items: center;
+        margin: 20px;
+    }
+
+    .custom-timeline-step i {
+        margin-right: 10px;
+        font-size: 2rem;
+    }
+
+    .custom-timeline-bar {
+        display: none;
+    }
+}

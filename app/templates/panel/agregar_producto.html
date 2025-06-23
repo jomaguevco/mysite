@@ -1,0 +1,111 @@
+{% extends 'basePanel.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Agregar Nuevo Producto</h2>
+
+    <!-- Mostrar alerta si hay mensajes flash relacionados con el guardado de géneros -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div>
+        {% for category, message in messages %}
+        {% if category == 'error_guardar_producto' or category == 'success_guardar_producto' %}
+        <div class="alert alert-{{ category == 'error_guardar_producto' and 'danger' or 'success' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form id="genreForm" action="{{ url_for('producto.guardar_producto') }}" method="post" class="mt-4">
+        <div class="mb-3">
+            <label for="nombre_producto" class="form-label">Nombre del producto</label>
+            <input type="text" class="form-control" id="nombre_producto" name="nombre_producto"
+                placeholder="Ingrese el nombre del producto" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="descripcion" name="descripcion"
+                placeholder="Ingrese la descripción del producto" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="anio_lanzamiento" class="form-label">Año de lanzamiento</label>
+            <input type="number" class="form-control" id="anio_lanzamiento" name="anio_lanzamiento"
+                placeholder="Ingrese el año de lanzamiento" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado_producto" class="form-label">Estado</label>
+            <select class="form-select" id="estado_producto" name="estado_producto" required>
+                <option value="A" selected>Activo</option>
+                <option value="I">Inactivo</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id_genero" class="form-label">Género</label>
+            <select class="form-select" id="id_genero" name="id_genero" required>
+                <option value="" selected >Seleccione el género</option>
+                {% for genero in generos %}
+                <option value="{{genero[0]}}">{{genero[1]}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_descuento" class="form-label">Descuento</label>
+            <select class="form-select" id="id_descuento" name="id_descuento" required>
+                <option value="" selected>Seleccione el descuento</option>
+                {% for descuento in descuentos %}
+                <option value="{{descuento[0]}}" selected>{{descuento[1]}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ url_for('producto.panel_nuestros_productos_home') }}" class="btn btn-secondary">Cancelar</a>
+            <button type="button" class="btn btn-primary" id="confirmButton">Guardar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal para confirmar la acción de guardar -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #737577; color: white;">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Guardar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" style="font-size: 1.2rem;">
+                <i class="bi bi-question-circle-fill" style="font-size: 2rem; color: #72767a;"></i>
+                <p>¿Estás seguro de que deseas guardar este producto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle-fill"></i> Cancelar
+                </button>
+                <button type="submit" class="btn btn-success" id="confirmSaveButton">
+                    <i class="bi bi-check-circle-fill"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('confirmButton').addEventListener('click', function () {
+        var modal = new bootstrap.Modal(document.getElementById('confirmModal'), {});
+        modal.show();
+
+        document.getElementById('confirmSaveButton').onclick = function () {
+            document.getElementById('genreForm').submit();
+        };
+    });
+</script>
+{% endblock %}

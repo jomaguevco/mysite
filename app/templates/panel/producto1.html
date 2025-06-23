@@ -1,0 +1,157 @@
+{% extends 'basePanel.html' %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-5 text-3xl font-bold">Gestión de Productos</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div>
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category == 'error' and 'danger' or 'success' }} alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 flex justify-between items-center">
+            <form action="{{ url_for('producto.panel_nuestros_productos_home') }}" method="get" class="flex-grow mr-4">
+                <div class="flex">
+                    <div class="relative flex-grow">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </span>
+                        <input type="text" name="nombre_producto"
+                            class="w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                            placeholder="Buscar producto xxx">
+                    </div>
+                    <button type="submit"
+                        class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+            <a href="{{ url_for('producto.formulario_agregar_producto') }}"
+                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                <i class="fas fa-plus mr-2"></i>Añadir Producto
+            </a>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID
+                            Producto</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Descripción</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Año
+                            de Lanzamiento</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Género</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Descuento</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                            Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for producto in productos %}
+                    <tr class="bg-white hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[0] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[1] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[3] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">{{ producto[2] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                {% if producto[4] == 'A' %}
+                                    bg-green-100 text-green-800
+                                {% else %}
+                                    bg-red-100 text-red-800
+                                {% endif %}
+                            ">
+                                {{ 'Activo' if producto[4] == 'A' else 'Inactivo' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ producto[5] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-right">{{ producto[6] }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            {% if producto[7] is none %}
+                            <a href="{{ url_for('producto.insertar_detalle_tipo_producto', id_producto=producto[0], id_tipo_producto=producto[9]) }}"
+                                style="color: #19a12d; text-decoration: none;" onmouseover="this.style.color='#10681d';"
+                                onmouseout="this.style.color='#19a12d';" class="mr-2">
+                                Insertar detalle
+                            </a>
+                            {% endif %}
+
+
+                            <a href="{{ url_for('producto.editar_producto', id_producto=producto[0]) }}"
+                                class="text-indigo-600 hover:text-indigo-900 mr-2">Editar</a>
+
+                            <button class="px-2 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 ml-2"
+                                data-bs-toggle="modal" data-bs-target="#bajaModal"
+                                onclick="setProductoToBaja('{{ producto[0] }}', '{{ producto[1] }}')">
+                                Dar de Baja
+                            </button>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Confirmar Dar de Baja -->
+<div class="modal fade" id="bajaModal" tabindex="-1" aria-labelledby="bajaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-red-500 text-white">
+                <h5 class="modal-title" id="bajaModalLabel"><i class="fas fa-exclamation-triangle"></i> Confirmar Acción
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="bajaMessage"><i class="fas fa-box"></i> ¿Estás seguro que deseas dar de baja este producto?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                    data-bs-dismiss="modal">Cancelar</button>
+                <form id="bajaForm" method="POST">
+                    <input type="hidden" name="id_producto" id="idProductoToBaja">
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"><i
+                            class="fas fa-trash mr-2"></i>Dar de Baja</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setProductoToBaja(idProducto, nombreProducto) {
+        const bajaMessage = document.getElementById('bajaMessage');
+        bajaMessage.innerHTML = `<i class="fas fa-box"></i> ¿Estás seguro que deseas dar de baja el producto <strong>${nombreProducto}</strong> con ID <strong>${idProducto}</strong>?`;
+
+        document.getElementById('idProductoToBaja').value = idProducto;
+
+        const bajaForm = document.getElementById('bajaForm');
+        bajaForm.action = `/productos_tienda/dar_de_baja_producto/${idProducto}`;
+    }
+</script>
+
+{% endblock %}

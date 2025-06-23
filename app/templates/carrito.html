@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrito.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container mt-5">
+    <h1 class="title">🛒 Carrito de Compras 🛍️</h1>
+    {% if cart %}
+    <div class="cart-container">
+        <div class="cart-items">
+            {% for item in cart %}
+            <div class="cart-item">
+                <img src="{{ url_for('static', filename='media/' + item.URL_IMG) }}" alt="{{ item.NOMBRE_PRODUCTO }}"
+                    class="item-image">
+                <div class="item-details">
+                    <h3>{{ item.NOMBRE_PRODUCTO }}</h3>
+                    <p>{{ item.NOMBRE_TIPO_PRODUCTO }}</p>
+                    <div class="price-info">
+                        <span class="original-price">S/{{ "%.2f"|format(item.PRECIO) }}</span>
+                        <span class="discounted-price">S/{{ "%.2f"|format(item.PRECIO_CON_DESCUENTO) }}</span>
+                    </div>
+                    <td>
+                        <!-- Select para elegir cantidad -->
+                        <form
+                            action="{{ url_for('carrito.update_quantity', product_id=item.ID_PRODUCTO, tipo_producto_id=item.ID_TIPO_PRODUCTO) }}"
+                            method="POST" class="d-inline">
+                            <select name="quantity" class="form-select quantity-select" onchange="this.form.submit()">
+                                {% for i in range(1, 11) %}
+                                <option value="{{ i }}" {% if item.CANTIDAD==i %}selected{% endif %}>
+                                    {{ i }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+
+                    <p class="item-total">Subtotal: S/{{ "%.2f"|format(item.TOTAL_CON_DESCUENTO) }}</p>
+                    <form
+                        action="{{ url_for('carrito.remove_from_cart', product_id=item.ID_PRODUCTO, tipo_producto_id=item.ID_TIPO_PRODUCTO) }}"
+                        method="POST" onsubmit="return confirmRemoveItem(event)">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="cart-summary">
+            <h2>Monto a pagar</h2>
+            <p>Subtotal (con IGV): <strong>S/{{ "%.2f"|format(total) }}</strong></p>
+            <div class="button-group">
+                <form action="{{ url_for('carrito.reset_cart') }}" method="POST" class="button-form" onsubmit="return confirmEmptyCart(event)">
+                    <button type="submit" class="btn-danger">
+                        <i class="fas fa-trash"></i> Vaciar carrito
+                    </button>
+                </form>
+                <form action="{{ url_for('carrito.checkout') }}" method="POST" class="button-form">
+                    <input type="hidden" name="total" value="{{ total }}">
+                    <button type="submit" class="btn-success">
+                        <i class="fas fa-credit-card"></i> Ir a pagar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <p>Tu carrito está vacío.</p>
+        <a href="{{ url_for('productos.tienda') }}" class="btn-primary">¡Explora nuestros productos!</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function confirmRemoveItem(event) {
+    if (!confirm('¿Estás seguro de que quieres eliminar este producto del carrito?')) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+function confirmEmptyCart(event) {
+    if (!confirm('¿Estás seguro de que quieres vaciar todo el carrito?')) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+</script>
+
+{% endblock %}

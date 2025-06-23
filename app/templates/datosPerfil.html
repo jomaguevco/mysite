@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}
+- Datos Personales
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{url_for('perfil.datosPerfil')}}">Datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.update_user_route2')}}">Configurar datos personales</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url_for('perfil.mis_compras')}}">Mis compras</a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Datos personales</h2>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+
+                            <img src="{{ url_for('static', filename='media/' ~ profil['URL_IMG']) }}" alt="Foto de perfil"
+                                class="img-fluid rounded-circle">
+
+                        </div>
+                        <div class="col-md-8">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="first-name" class="form-label">Nombres:</label>
+                                    <input type="text" class="form-control" id="first-name" value="{{profil['NOMBRES']}}"
+                                        disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="last-name-pat" class="form-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" id="last-name-pat" value="{{profil['APELLIDO_PAT']}}"
+                                        disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="last-name-mat" class="form-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" id="last-name-mat" value="{{profil['APELLIDO_MAT']}}"
+                                        disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dni" class="form-label">Número de DNI:</label>
+                                    <input type="text" class="form-control" id="dni" value="{{profil['NRO_DOCUMENTO']}}" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Número de celular:</label>
+                                    <input type="text" class="form-control" id="phone" value="{{profil['TELEFONO']}}" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo electrónico:</label>
+                                    <input type="email" class="form-control" id="email" value="{{profil['EMAIL']}}" disabled>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Dirección</h2>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="address" class="form-label">Dirección:</label>
+
+                                <input type="text" class="form-control" id="address" value="{{profil['DIRECCION']}}" disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="apartment" class="form-label">Apartamento, suite, etc.:</label>
+                                <input type="text" class="form-control" id="apartment" value="{{profil['APARTAMENTO']}}" disabled>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="department" class="form-label">Departamento:</label>
+
+                                <input type="text" class="form-control" id="department" value="{{profil['DEPARTAMENTO']}}"
+                                    disabled>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="province" class="form-label">Provincia:</label>
+                                <input type="text" class="form-control" id="province" value="{{profil['PROVINCIA']}}" disabled>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="district" class="form-label">Distrito:</label>
+                                <input type="text" class="form-control" id="district" value="{{profil['DISTRITO']}}" disabled>
+
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postal-code" class="form-label">Código postal:</label>
+
+                            <input type="text" class="form-control" id="postal-code" value="{{profil['CODIGO_POSTAL']}}" disabled>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .card-title{
+        color: #2a9d8f;
+        font-size: 1.3rem;
+    }
+</style>
+{% endblock %}
