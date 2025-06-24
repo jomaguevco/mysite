@@ -27,7 +27,7 @@ def update_user_route2():
     profile = control_usuario.get_user_by_id(current_user.get_id())
     if not profile:
         flash('Usuario no encontrado', 'error')
-        return redirect(url_for('perfil.perfil'))
+        return redirect(url_for('perfil.datosPerfil'))
 
     if request.method == 'POST':
         form_data = request.form
@@ -60,7 +60,7 @@ def update_user_route2():
 
         if control_usuario.update_user_perfil(current_user.get_id(), user_data):
             flash('Usuario actualizado exitosamente', 'success')
-            return redirect(url_for('perfil.perfil'))
+            return redirect(url_for('perfil.datosPerfil'))
         else:
             flash('Error al actualizar el usuario', 'error')
 

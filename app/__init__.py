@@ -21,12 +21,17 @@ jwt = JWTManager()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    #socketio.init_app(app)
-    app.config['SECRET_KEY'] = 'clave-secreta'
-    app.config['JWT_SECRET_KEY'] = 'clave-super-secreta'
+    # Unifica la clave secreta
+    app.config['SECRET_KEY'] = config_class.SECRET_KEY
+    app.config['JWT_SECRET_KEY'] = config_class.JWT_SECRET_KEY
     app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
     app.config['JWT_COOKIE_SECURE'] = False
     app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+    # Configuración de cookies de sesión para desarrollo local
+    app.config['SESSION_COOKIE_SECURE'] = False
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    app.config['SESSION_COOKIE_PATH'] = '/'
 
 
     # Inicialización de las extensiones con la app

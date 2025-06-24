@@ -1,16 +1,17 @@
 from flask_login import UserMixin
+from app.bd_seguridad import get_db_connection_seguridad
 
 class User(UserMixin):
     def __init__(self, user_dict):
-        self.id = user_dict.get('ID_USUARIO') or user_dict.get('ID')  # Admite ambas claves
+        # Flask-Login requiere que id sea string
+        self.id = str(user_dict.get('ID_USUARIO') or user_dict.get('ID'))
         self.email = user_dict['EMAIL']
         self.password = user_dict['PASSWORD']
         self.nombre_usuario = user_dict['NOMBRE_USUARIO']
-        #
         self.image = user_dict.get('URL_IMG') or user_dict.get('image') or "default.png"
-        #
         self.id_rol = user_dict['ID_ROL']
-        self.is_active = user_dict.get('ESTADO_USUARIO', 'A') == 'A'
+        # Asegura que is_active sea booleano
+        self._is_active = user_dict.get('ESTADO_USUARIO', 'A') == 'A'
 
     @property
     def is_active(self):
@@ -18,12 +19,11 @@ class User(UserMixin):
 
     @is_active.setter
     def is_active(self, value):
-        self._is_active = value
+        self._is_active = bool(value)
 
     @staticmethod
     def get(user_id):
-        from app.bd import get_db_connection
-        conn = get_db_connection()
+        conn = get_db_connection_seguridad()
         try:
             with conn.cursor() as cursor:
                 cursor.execute("SELECT * FROM USUARIO WHERE ID_USUARIO = %s", (user_id,))

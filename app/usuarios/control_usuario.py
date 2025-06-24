@@ -92,6 +92,10 @@ def update_user(user_id, user_data):
     conn = get_db_connection_seguridad()
     try:
         with conn.cursor() as cursor:
+            # Recupera la contraseña actual si no se envía una nueva
+            if not user_data.get('password'):
+                cursor.execute("SELECT PASSWORD FROM USUARIO WHERE ID_USUARIO = %s", (user_id,))
+                user_data['password'] = cursor.fetchone()[0]
             sql = """
             UPDATE USUARIO
             SET ID_ROL = %s, NOMBRE_USUARIO = %s, PASSWORD = %s, EMAIL = %s, TELEFONO = %s,
@@ -103,7 +107,7 @@ def update_user(user_id, user_data):
             cursor.execute(sql, (
                 user_data['id_rol'],
                 user_data['nombre_usuario'],
-                user_data['password'],  # Se recomienda cifrar la contraseña antes de almacenarla
+                user_data['password'],
                 user_data['email'],
                 user_data['telefono'],
                 user_data['tipo_doc'],
@@ -118,7 +122,7 @@ def update_user(user_id, user_data):
                 user_data['nombres'],
                 user_data['apellido_pat'],
                 user_data['apellido_mat'],
-                user_data['url_img'],  # Imagen subida
+                user_data['url_img'],
                 user_id
             ))
         conn.commit()
@@ -135,6 +139,10 @@ def update_user_perfil(user_id, user_data):
     conn = get_db_connection_seguridad()
     try:
         with conn.cursor() as cursor:
+            # Recupera la contraseña actual si no se envía una nueva
+            if not user_data.get('password'):
+                cursor.execute("SELECT PASSWORD FROM USUARIO WHERE ID_USUARIO = %s", (user_id,))
+                user_data['password'] = cursor.fetchone()[0]
             sql = """
             UPDATE USUARIO
             SET PASSWORD = %s, TELEFONO = %s,
@@ -144,7 +152,7 @@ def update_user_perfil(user_id, user_data):
             WHERE ID_USUARIO = %s
             """
             cursor.execute(sql, (
-                user_data['password'],  # Se recomienda cifrar la contraseña antes de almacenarla
+                user_data['password'],
                 user_data['telefono'],
                 user_data['direccion'],
                 user_data['provincia'],
